@@ -187,7 +187,10 @@ See also `semantic-common-lisp-setup-form-parser'."
 Return a bovination list to use."
   (let* ((start (car sl))
          (end   (cdr sl))
-         (form  (read (buffer-substring-no-properties start end))))
+	 ;; Reader syntaxes (such as cl-interpol) wang semantics use of that function, so, lets try to get rid of those first
+         (form  (read (replace-regexp-in-string
+		       "#\\?" ""
+		       (buffer-substring-no-properties start end)))))
     (cond
      ;; If the first elt is a list, then it is some arbitrary code.
      ((listp (car form))
