@@ -352,7 +352,10 @@ Return a bovination list to use."
       (let ((docpart (nthcdr 4 form)))
 	(semantic-tag-new-type
 	 (symbol-name (nth 1 form))
-         "class"
+         (case (nth 0 form)
+	   (defclass "class")
+	   (defcomponent "component")
+	   (define-condition "condition"))
 	 (semantic-common-lisp-clos-args-to-semantic (nth 3 form))
 	 (semantic-common-lisp-desymbolify (nth 2 form))
 	 :typemodifiers (semantic-common-lisp-desymbolify
@@ -364,6 +367,7 @@ Return a bovination list to use."
 	 )))
   defclass
   defcomponent
+  define-condition
   )
 
 (semantic-common-lisp-setup-form-parser
